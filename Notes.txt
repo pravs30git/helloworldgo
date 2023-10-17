@@ -1,0 +1,32 @@
+https://zoltanaltfatter.com/2021/03/14/hello-world-with-knative-serving/
+
+
+https://cloud.redhat.com/blog/knative-serving-your-serverless-services
+
+
+https://opensource.com/article/21/11/knative-serving-serverless
+
+
+https://tanzu.vmware.com/developer/guides/knative-serving-wi/
+
+https://www.redhat.com/en/blog/what-i-learned-about-kubernetes-and-knative-serverless
+
+
+https://github.com/ruromero/cloudevents-player
+https://developers.redhat.com/articles/2023/05/02/how-set-event-driven-microservices-using-knative-eventing#cloudevent_processing_with_knative_functions
+
+-----------------------
+
+kn service create hello-example \
+--image gcr.io/knative-samples/helloworld-go \
+--env TARGET="First"
+
+
+kn service update hello-example \
+--traffic hello-example-00001=50 \
+--traffic hello-example-00002=50
+
+
+kubectl port-forward --namespace kourier-system $(kubectl get pod -n kourier-system -l "app=3scale-kourier-gateway" --output=jsonpath="{.items[0].metadata.name}") 8080:8080 19000:9000 8443:8443
+
+docker run --rm -it ruslanys/wrk -t12 -c400 -d30s  http://hello-example.default.127.0.0.1.sslip.io:8080/
